@@ -1,0 +1,35 @@
+
+
+
+server:
+  port: 9690
+
+
+spring:
+  application:
+    name: API-GATEWAY
+
+  cloud:
+    gateway:
+      routes:
+        - id: image-upload-service
+          uri: lb://IMAGE-UPLOAD-SERVICE
+          predicates:
+            - Path=/api/upload/**,/api/images/**
+
+        - id: image-analysis-service
+          uri: lb://IMAGE-ANALYSIS-SERVICE
+          predicates:
+            - Path=/api/analyze/**
+
+        - id: report-generation-service
+          uri: lb://REPORT-GENERATION-SERVICE
+          predicates:
+            - Path=/api/reports/**
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:9091/eureka
